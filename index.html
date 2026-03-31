@@ -1,90 +1,233 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JB MANXX</title>
+<title>HB MANX</title>
 
 <style>
-
-body{
-margin:0;
-padding:0;
-font-family:Arial;
-text-align:center;
-color:white;
-background:black;
+body {
+    margin: 0;
+    background: black;
+    color: white;
+    font-family: monospace;
+    overflow: hidden;
 }
 
-video{
-position:fixed;
-right:0;
-bottom:0;
-min-width:100%;
-min-height:100%;
-object-fit:cover;
-z-index:-1;
+/* LOADER */
+#loader {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    flex-direction: column;
 }
 
-.container{
-margin-top:120px;
+#typing {
+    color: red;
+    font-size: 20px;
+    border-right: 2px solid red;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
-h1{
-font-size:35px;
-margin-bottom:40px;
+/* PARTICLES */
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
 }
 
-.btn{
-display:block;
-width:80%;
-margin:20px auto;
-padding:15px;
-border-radius:30px;
-background:#2f8cff;
-color:white;
-font-size:16px;
-text-decoration:none;
-box-shadow:0 0 20px #2f8cff;
+/* FIRE BG */
+.fire {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: url('https://media.giphy.com/media/3o7TKtnuHOHHUjR38Y/giphy.gif');
+    background-size: cover;
+    opacity: 0.25;
 }
 
-.footer{
-margin-top:40px;
-font-size:14px;
-opacity:0.8;
+/* MAIN */
+.container {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
+/* LOGO */
+.logo {
+    width: 140px;
+    border-radius: 50%;
+    box-shadow: 0 0 20px red;
+    animation: float 3s infinite;
+}
+
+@keyframes float {
+    50% { transform: translateY(-10px); }
+}
+
+/* GLITCH */
+h1 {
+    color: red;
+    font-size: 40px;
+    animation: glitch 1s infinite;
+}
+
+@keyframes glitch {
+    0% { text-shadow: 2px 0 red; }
+    50% { text-shadow: -2px 0 blue; }
+    100% { text-shadow: 2px 0 red; }
+}
+
+/* BUTTON */
+.btn {
+    display: block;
+    margin: 15px auto;
+    width: 250px;
+    padding: 12px;
+    background: red;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+/* CURSOR TRAIL */
+.trail {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: red;
+    border-radius: 50%;
+    pointer-events: none;
+    box-shadow: 0 0 10px red;
+}
 </style>
 </head>
 
 <body>
 
-<!-- background video -->
-<video autoplay muted loop>
-<source src="anime.mp4" type="video/mp4">
-</video>
-
-<div class="container">
-
-<h1>JB MANXX ✌️</h1>
-
-<a class="btn" href="https://whatsapp.com/channel/ISI_LINK_KAMU">
-JOIN SALURAN WHATSAPP
-</a>
-
-<a class="btn" href="#">
-GB WHATSAPP
-</a>
-
-<a class="btn" href="https://wa.me/628XXXXXXXXXX">
-CHAT ADMIN
-</a>
-
-<div class="footer">
-WELCOME TO WEBSITE MANXX JB 🤝<br>
-FAST RESPON • JB / GB WA
+<!-- LOADING -->
+<div id="loader">
+    <div id="typing"></div>
 </div>
 
+<!-- PARTICLE -->
+<canvas id="particles"></canvas>
+
+<!-- FIRE -->
+<div class="fire"></div>
+
+<!-- MAIN -->
+<div class="container" id="main" style="display:none;">
+    <img src="https://i.ibb.co/6bQ8G6R/mask.png" id="logo" class="logo">
+    <h1>HB MANX</h1>
+    <p>ACCESS GRANTED 🔥</p>
+
+    <a class="btn" href="https://whatsapp.com/channel/0029VbAZnNF8KMqtuf4Xwt3Q">📦 Info Stok</a>
+    <a class="btn" href="https://chat.whatsapp.com/DQnT8lrpfVKHCnAeh5WYBV?mode=gi_t">💬 Join GB</a>
+    <a class="btn" href="https://wa.me/+6283192628830">📲 Chat Admin</a>
 </div>
+
+<!-- SOUND -->
+<audio id="bgSound" src="https://www.myinstants.com/media/sounds/hacker.mp3"></audio>
+<audio id="clickSound" src="https://www.myinstants.com/media/sounds/mouse-click.mp3"></audio>
+
+<script>
+
+/* AUTO FULLSCREEN (mobile) */
+document.documentElement.requestFullscreen?.();
+
+/* TYPING EFFECT */
+let text = "ACCESS SYSTEM...";
+let i = 0;
+let typing = document.getElementById("typing");
+
+function type() {
+    if (i < text.length) {
+        typing.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(type, 80);
+    } else {
+        setTimeout(startMain, 1000);
+    }
+}
+type();
+
+/* START MAIN */
+function startMain() {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("main").style.display = "block";
+    document.getElementById("bgSound").play();
+}
+
+/* GANTI LOGO */
+setTimeout(() => {
+    document.getElementById("logo").src = "https://i.ibb.co/ZYW3VTp/character.png";
+}, 6000);
+
+/* CLICK SOUND */
+document.querySelectorAll(".btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        document.getElementById("clickSound").play();
+    });
+});
+
+/* PARTICLES */
+let canvas = document.getElementById("particles");
+let ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+for (let i = 0; i < 80; i++) {
+    particles.push({
+        x: Math.random()*canvas.width,
+        y: Math.random()*canvas.height,
+        size: Math.random()*3,
+        speed: Math.random()*1
+    });
+}
+
+function drawParticles() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = "red";
+    particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+        ctx.fill();
+        p.y += p.speed;
+        if (p.y > canvas.height) p.y = 0;
+    });
+    requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+/* CURSOR TRAIL */
+document.addEventListener("mousemove", e => {
+    let dot = document.createElement("div");
+    dot.className = "trail";
+    dot.style.left = e.pageX + "px";
+    dot.style.top = e.pageY + "px";
+    document.body.appendChild(dot);
+
+    setTimeout(() => {
+        dot.remove();
+    }, 300);
+});
+
+</script>
 
 </body>
 </html>
